@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Threading.Tasks;
 using NHibernate;
 using NHibernate.Cache;
 using NHibernate.Cache.Entry;
@@ -9,6 +10,7 @@ using NHibernate.Metadata;
 using NHibernate.Persister.Entity;
 using NHibernate.Tuple.Entity;
 using NHibernate.Type;
+using NHibernate.Util;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
 {
@@ -30,56 +32,65 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             return null;
         }
 
-        public int[] FindDirty(object[] currentState, object[] previousState, object entity, ISessionImplementor session)
+        public Task<int[]> FindDirty(object[] currentState, object[] previousState, object entity, ISessionImplementor session)
         {
-            return new int[] {};
+            return Task.FromResult(new int[] {});
         }
 
-        public int[] FindModified(object[] old, object[] current, object entity, ISessionImplementor session)
+        public Task<int[]> FindModified(object[] old, object[] current, object entity, ISessionImplementor session)
         {
-            return new int[] {};
+            return Task.FromResult(new int[] { });
         }
 
-        public object[] GetNaturalIdentifierSnapshot(object id, ISessionImplementor session)
+        public Task<object[]> GetNaturalIdentifierSnapshot(object id, ISessionImplementor session)
         {
-            return new object[] {};
+            return Task.FromResult(new object[] { });
         }
 
-        public object Load(object id, object optionalObject, LockMode lockMode, ISessionImplementor session)
+        public Task<object> Load(object id, object optionalObject, LockMode lockMode, ISessionImplementor session)
         {
-            return null;
+            return Task.FromResult<object>(null);
         }
 
-        public void Lock(object id, object version, object obj, LockMode lockMode, ISessionImplementor session)
-        {}
-
-        public void Insert(object id, object[] fields, object obj, ISessionImplementor session)
-        {}
-
-        public object Insert(object[] fields, object obj, ISessionImplementor session)
+        public Task Lock(object id, object version, object obj, LockMode lockMode, ISessionImplementor session)
         {
-            return null;
+            return TaskHelper.CompletedTask;
         }
 
-        public void Delete(object id, object version, object obj, ISessionImplementor session)
-        {}
-
-        public void Update(object id, object[] fields, int[] dirtyFields, bool hasDirtyCollection, object[] oldFields, object oldVersion, object obj, object rowId, ISessionImplementor session)
-        {}
-
-        public object[] GetDatabaseSnapshot(object id, ISessionImplementor session)
+        public Task Insert(object id, object[] fields, object obj, ISessionImplementor session)
         {
-            return new object[] {};
+            return TaskHelper.CompletedTask;
         }
 
-        public object GetCurrentVersion(object id, ISessionImplementor session)
+        public Task<object> Insert(object[] fields, object obj, ISessionImplementor session)
         {
-            return null;
+            return Task.FromResult<object>(null);
         }
 
-        public object ForceVersionIncrement(object id, object currentVersion, ISessionImplementor session)
+        public Task Delete(object id, object version, object obj, ISessionImplementor session)
         {
-            return null;
+            return TaskHelper.CompletedTask;
+        }
+
+        public Task Update(object id, object[] fields, int[] dirtyFields, bool hasDirtyCollection, object[] oldFields,
+            object oldVersion, object obj, object rowId, ISessionImplementor session)
+        {
+            return TaskHelper.CompletedTask;
+        }
+
+        public Task<object[]> GetDatabaseSnapshot(object id, ISessionImplementor session)
+        {
+            return Task.FromResult(new object[] { });
+        }
+
+        public Task<object> GetCurrentVersion(object id, ISessionImplementor session)
+        {
+            return Task.FromResult<object>(null);
+        }
+
+        public Task<object> ForceVersionIncrement(object id, object currentVersion, ISessionImplementor session)
+        {
+            return Task.FromResult<object>(null);
         }
 
         public EntityMode? GuessEntityMode(object obj)
@@ -113,11 +124,15 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             return new object[] {};
         }
 
-        public void ProcessInsertGeneratedProperties(object id, object entity, object[] state, ISessionImplementor session)
-        {}
+        public Task ProcessInsertGeneratedProperties(object id, object entity, object[] state, ISessionImplementor session)
+        {
+            return TaskHelper.CompletedTask;
+        }
 
-        public void ProcessUpdateGeneratedProperties(object id, object entity, object[] state, ISessionImplementor session)
-        {}
+        public Task ProcessUpdateGeneratedProperties(object id, object entity, object[] state, ISessionImplementor session)
+        {
+            return TaskHelper.CompletedTask;
+        }
 
         public Type GetMappedClass(EntityMode entityMode)
         {

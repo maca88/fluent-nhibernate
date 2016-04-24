@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using FluentNHibernate.Mapping;
@@ -12,6 +13,7 @@ using FluentNHibernate.MappingModel.Collections;
 using FluentNHibernate.MappingModel.Identity;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
+using NHibernate.Util;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.ConventionsTests
@@ -648,13 +650,15 @@ namespace FluentNHibernate.Testing.ConventionsTests
                 return 0;
             }
 
-            public object NullSafeGet(IDataReader rs, string[] names, object owner)
+            public Task<object> NullSafeGet(IDataReader rs, string[] names, object owner)
             {
-                return null;
+                return Task.FromResult<object>(null);
             }
 
-            public void NullSafeSet(IDbCommand cmd, object value, int index)
-            {}
+            public Task NullSafeSet(IDbCommand cmd, object value, int index)
+            {
+                return TaskHelper.CompletedTask;
+            }
 
             public object DeepCopy(object value)
             {

@@ -4,6 +4,7 @@ using System;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using FluentNHibernate.Automapping.TestFixtures.ComponentTypes;
 using FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes;
 using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
@@ -16,6 +17,7 @@ using NHibernate.Engine;
 using NHibernate.SqlTypes;
 using NHibernate.Type;
 using NHibernate.UserTypes;
+using NHibernate.Util;
 
 namespace FluentNHibernate.Automapping.TestFixtures
 {
@@ -261,14 +263,14 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomTypes
             return x.GetHashCode();
         }
 
-        public object NullSafeGet(IDataReader rs, string[] names, object owner)
+        public Task<object> NullSafeGet(IDataReader rs, string[] names, object owner)
         {
-            return null;
+            return Task.FromResult<object>(null);
         }
 
-        public void NullSafeSet(IDbCommand cmd, object value, int index)
+        public Task NullSafeSet(IDbCommand cmd, object value, int index)
         {
-            
+            return TaskHelper.CompletedTask;
         }
 
         public object DeepCopy(object value)
@@ -352,10 +354,10 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
             get { return true; }
         }
 
-        public Object NullSafeGet(IDataReader rs, string[] names, ISessionImplementor session, Object owner)
+        public async Task<object> NullSafeGet(IDataReader rs, string[] names, ISessionImplementor session, Object owner)
         {
-            string first = (string)NHibernateUtil.String.NullSafeGet(rs, names[0], session, owner);
-            string second = (string)NHibernateUtil.String.NullSafeGet(rs, names[1], session, owner);
+            string first = (string)await NHibernateUtil.String.NullSafeGet(rs, names[0], session, owner);
+            string second = (string)await NHibernateUtil.String.NullSafeGet(rs, names[1], session, owner);
 
             return (first == null && second == null) ? null : new string[] { first, second };
         }
@@ -369,12 +371,12 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
             NHibernateUtil.String.NullSafeSet(st, ds.s2, index + 1, session);
         }
 #else
-        public void NullSafeSet(IDbCommand st, Object value, int index, bool[] unknown, ISessionImplementor session)
+        public async Task NullSafeSet(IDbCommand st, Object value, int index, bool[] unknown, ISessionImplementor session)
         {
             DoubleString ds = value as DoubleString ?? new DoubleString();
 
-            NHibernateUtil.String.NullSafeSet(st, ds.s1, index, session);
-            NHibernateUtil.String.NullSafeSet(st, ds.s2, index + 1, session);
+            await NHibernateUtil.String.NullSafeSet(st, ds.s1, index, session);
+            await NHibernateUtil.String.NullSafeSet(st, ds.s2, index + 1, session);
         }
 #endif
 
@@ -409,14 +411,14 @@ namespace FluentNHibernate.Automapping.TestFixtures.CustomCompositeTypes
             return DeepCopy(cached);
         }
 
-        public object Disassemble(Object value, ISessionImplementor session)
+        public Task<object> Disassemble(Object value, ISessionImplementor session)
         {
-            return DeepCopy(value);
+            return Task.FromResult(DeepCopy(value));
         }
 
-        public object Replace(object original, object target, ISessionImplementor session, object owner)
+        public Task<object> Replace(object original, object target, ISessionImplementor session, object owner)
         {
-            return DeepCopy(original);
+            return Task.FromResult(DeepCopy(original));
         }
     }
 }

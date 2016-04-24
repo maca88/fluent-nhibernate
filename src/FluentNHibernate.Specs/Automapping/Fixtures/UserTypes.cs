@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.Instances;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
+using NHibernate.Util;
 
 namespace FluentNHibernate.Specs.Automapping.Fixtures
 {
@@ -58,14 +60,14 @@ namespace FluentNHibernate.Specs.Automapping.Fixtures
             return x.GetHashCode();
         }
 
-        public object NullSafeGet(IDataReader rs, string[] names, object owner)
+        public Task<object> NullSafeGet(IDataReader rs, string[] names, object owner)
         {
-            return null;
+            return Task.FromResult<object>(null);
         }
 
-        public void NullSafeSet(IDbCommand cmd, object value, int index)
+        public Task NullSafeSet(IDbCommand cmd, object value, int index)
         {
-
+            return TaskHelper.CompletedTask;
         }
 
         public object DeepCopy(object value)
@@ -119,14 +121,14 @@ namespace FluentNHibernate.Specs.Automapping.Fixtures
             throw new NotImplementedException();
         }
 
-        public object NullSafeGet(IDataReader rs, string[] names, object owner)
+        public Task<object> NullSafeGet(IDataReader rs, string[] names, object owner)
         {
-            throw new NotImplementedException();
+            return Task.FromResult<object>(null);
         }
 
-        public void NullSafeSet(IDbCommand cmd, object value, int index)
+        public Task NullSafeSet(IDbCommand cmd, object value, int index)
         {
-            throw new NotImplementedException();
+            return TaskHelper.CompletedTask;
         }
 
         public object DeepCopy(object value)

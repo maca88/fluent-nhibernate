@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FluentNHibernate.Automapping.TestFixtures;
 using FluentNHibernate.Automapping.TestFixtures.CustomTypes;
 using FluentNHibernate.Conventions.Helpers.Builders;
@@ -188,9 +189,9 @@ namespace FluentNHibernate.Testing.ConventionsTests.ApplyingToModel
 
         private class CustomGenerator : IIdentifierGenerator
         {
-            public object Generate(ISessionImplementor session, object obj)
+            public Task<object> Generate(ISessionImplementor session, object obj)
             {
-                return null;
+                return Task.FromResult<object>(null);
             }
         }
     }

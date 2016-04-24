@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 using FluentNHibernate.Mapping;
 using NHibernate.Properties;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
+using NHibernate.Util;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.DomainModel.Mapping
@@ -466,13 +468,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 return 0;
             }
 
-            public object NullSafeGet(IDataReader rs, string[] names, object owner)
+            public Task<object> NullSafeGet(IDataReader rs, string[] names, object owner)
             {
-                return null;
+                return Task.FromResult<object>(null);
             }
 
-            public void NullSafeSet(IDbCommand cmd, object value, int index)
-            {}
+            public Task NullSafeSet(IDbCommand cmd, object value, int index)
+            {
+                return TaskHelper.CompletedTask;
+            }
 
             public object DeepCopy(object value)
             {
@@ -522,13 +526,15 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 return 0;
             }
 
-            public object NullSafeGet(IDataReader rs, string[] names, object owner)
+            public Task<object> NullSafeGet(IDataReader rs, string[] names, object owner)
             {
-                return null;
+                return Task.FromResult<object>(null);
             }
 
-            public void NullSafeSet(IDbCommand cmd, object value, int index)
-            {}
+            public Task NullSafeSet(IDbCommand cmd, object value, int index)
+            {
+                return TaskHelper.CompletedTask;
+            }
 
             public object DeepCopy(object value)
             {

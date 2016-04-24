@@ -4,10 +4,12 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using FluentNHibernate.Mapping;
 using NHibernate;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
+using NHibernate.Util;
 using NUnit.Framework;
 
 namespace FluentNHibernate.Testing.FluentInterfaceTests
@@ -96,7 +98,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             throw new NotImplementedException();
         }
 
-        public object NullSafeGet(IDataReader rs, string[] names, object owner)
+        public Task<object> NullSafeGet(IDataReader rs, string[] names, object owner)
         {
             IList<string> contexts = new List<string>();
 
@@ -105,10 +107,10 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
             if ((bool)NHibernateUtil.Boolean.NullSafeGet(rs, names[2])) contexts.Add("Wallpaper");
             if ((bool)NHibernateUtil.Boolean.NullSafeGet(rs, names[3])) contexts.Add("Placeholder");
 
-            return contexts;
+            return Task.FromResult<object>(contexts);
         }
 
-        public void NullSafeSet(IDbCommand cmd, object value, int index)
+        public Task NullSafeSet(IDbCommand cmd, object value, int index)
         {
             IList<string> contexts = value as IList<string>;
 
@@ -119,6 +121,7 @@ namespace FluentNHibernate.Testing.FluentInterfaceTests
                 NHibernateUtil.Boolean.NullSafeSet(cmd, contexts.Contains("Wallpaper"), index + 2);
                 NHibernateUtil.Boolean.NullSafeSet(cmd, contexts.Contains("Placeholder"), index + 3);
             }
+            return TaskHelper.CompletedTask;
         }
 
         public object DeepCopy(object value)
