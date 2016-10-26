@@ -1,0 +1,1 @@
+.\tools\nuget\NuGet.exe pack .\src\FluentNHibernate.nuspec -Prop Configuration=Release -BasePath ".\FluentNHibernate"

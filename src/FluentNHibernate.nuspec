@@ -3,12 +3,12 @@
   <metadata xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <id>FluentNHibernateX</id>
     <title>FluentNHibernateX</title>
-    <version>1.0.0.0</version>
+    <version>1.2.0.0-Alpha1</version>
     <authors>maca88</authors>
     <licenseUrl>http://github.com/maca88/fluent-nhibernate/raw/master/LICENSE.txt</licenseUrl>
     <projectUrl>http://fluentnhibernate.org</projectUrl>
   	<dependencies>
-  		<dependency id="NHibernateX" version="[1.3.0.4000, 2.0)" />
+  		<dependency id="NHibernateX" version="[2.0-Alpha1]" />
   	</dependencies>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Fluent, XML-less, compile safe, automated, convention-based mappings for NHibernateX.</description>
@@ -16,6 +16,6 @@
     <language>en-US</language>
   </metadata>
   <files>
-		<file src="..\src\FluentNHibernate\bin\Release\FluentNHibernate.*" target="lib\net40" />          
+		<file src="..\src\FluentNHibernate\bin\Release\FluentNHibernate.*" target="lib\net45" />          
   </files>
 </package>

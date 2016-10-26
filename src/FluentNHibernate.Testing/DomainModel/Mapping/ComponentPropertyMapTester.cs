@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Data.Common;
 using System.Threading.Tasks;
 using FluentNHibernate.Mapping;
 using NHibernate.SqlTypes;
@@ -219,14 +220,13 @@ namespace FluentNHibernate.Testing.DomainModel.Mapping
                 return 0;
             }
 
-            public Task<object> NullSafeGet(IDataReader rs, string[] names, object owner)
+            public object NullSafeGet(DbDataReader rs, string[] names, object owner)
             {
-                return Task.FromResult<object>(null);
+                return null;
             }
 
-            public Task NullSafeSet(IDbCommand cmd, object value, int index)
+            public void NullSafeSet(DbCommand cmd, object value, int index)
             {
-                return TaskHelper.CompletedTask;
             }
 
             public object DeepCopy(object value)
